@@ -1,17 +1,20 @@
 defmodule UserCounterTest do
   use ExUnit.Case, async: true
 
-  test "initializes to zero" do
-    UserCounter.reset() # BAD
-    assert UserCounter.count() == 0
+  setup do
+    {:ok, counter} = UserCounter.start_link(name: :initialize_test)
+    %{counter: counter}
   end
 
-  test "increments" do
-    UserCounter.reset() # BAD
-    assert UserCounter.increment()
-    assert UserCounter.count() == 1
+  test "initializes to zero", %{counter: counter} do
+    assert UserCounter.count(counter) == 0
+  end
 
-    assert UserCounter.increment()
-    assert UserCounter.count() == 2
+  test "increments", %{counter: counter} do
+    assert UserCounter.increment(counter)
+    assert UserCounter.count(counter) == 1
+
+    assert UserCounter.increment(counter)
+    assert UserCounter.count(counter) == 2
   end
 end
