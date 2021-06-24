@@ -17,4 +17,16 @@ defmodule UserCounterTest do
     assert UserCounter.increment(counter)
     assert UserCounter.count(counter) == 2
   end
+
+  test "decrements, but does not go negative", %{counter: counter} do
+    assert UserCounter.decrement(counter)
+    assert UserCounter.count(counter) == 0
+
+    assert UserCounter.increment(counter)
+    assert UserCounter.increment(counter)
+    assert UserCounter.increment(counter)
+
+    assert UserCounter.decrement(counter)
+    assert UserCounter.count(counter) == 2
+  end
 end
