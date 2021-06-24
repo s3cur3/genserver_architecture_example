@@ -9,6 +9,9 @@ defmodule UserCounter do
 
   def count, do: GenServer.call(__MODULE__, :count)
 
+  # BAD!
+  def reset, do: GenServer.call(__MODULE__, :reset)
+
   ############## GenServer Implementation ################
   @impl GenServer
   def init(initial_count) when is_integer(initial_count) do
@@ -28,5 +31,10 @@ defmodule UserCounter do
   @impl GenServer
   def handle_call(:decrement, _from, current_count) do
     {:reply, :ok, current_count - 1}
+  end
+
+  @impl GenServer
+  def handle_call(:reset, _from, _count) do
+    {:reply, :ok, 0}
   end
 end
