@@ -11,22 +11,22 @@ defmodule UserCounterTest do
   end
 
   test "increments", %{counter: counter} do
-    assert UserCounter.increment(counter)
+    UserCounter.increment(counter)
     assert UserCounter.count(counter) == 1
 
-    assert UserCounter.increment(counter)
+    UserCounter.increment(counter)
     assert UserCounter.count(counter) == 2
   end
 
   test "decrements, but does not go negative", %{counter: counter} do
-    assert UserCounter.decrement(counter)
+    UserCounter.decrement(counter)
     assert UserCounter.count(counter) == 0
 
-    assert UserCounter.increment(counter)
-    assert UserCounter.increment(counter)
-    assert UserCounter.increment(counter)
+    UserCounter.increment(counter)
+    UserCounter.increment(counter)
+    UserCounter.increment(counter)
 
-    assert UserCounter.decrement(counter)
+    UserCounter.decrement(counter)
     assert UserCounter.count(counter) == 2
   end
 end

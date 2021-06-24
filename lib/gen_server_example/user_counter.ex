@@ -30,7 +30,7 @@ defmodule UserCounter do
 
   @impl GenServer
   def handle_call(:decrement, _from, current_count) do
-    {:reply, :ok, current_count - 1}
+    {:reply, :ok, max(current_count - 1, 0)}
   end
 
   @impl GenServer
