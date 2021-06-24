@@ -1,0 +1,5 @@
+*.ex    diff=elixir
+*.exs   diff=elixir
+*.py    diff=python
+*.md    diff=markdown
+
