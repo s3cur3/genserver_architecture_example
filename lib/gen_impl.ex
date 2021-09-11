@@ -1,5 +1,7 @@
 defmodule GenImpl do
   @moduledoc "Simple utilities for avoiding boilerplate in a GenServer implementation."
+  # TODO: Add a macro that says "my GenServer wraps _all_ the public functions of my Impl module
+  #       in the usual way.
 
   @doc """
   If your GenServer is a thin wrapper around a struct, you can make its handle_call/3 and/or
