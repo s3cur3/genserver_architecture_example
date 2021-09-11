@@ -11,14 +11,14 @@ defmodule UserCounter do
     GenServer.start_link(__MODULE__, {garbage_collection_ms, max_age_ms}, name: server_name)
   end
 
-  def put(server, user_id, region), do: GenServer.call(server, {:apply, &UserCounter.Impl.put/3, [user_id, region]})
-  def drop(server, user_id), do: GenServer.call(server, {:apply, &UserCounter.Impl.drop/2, [user_id]})
+  def put(server, user_id, region), do: GenServer.call(server, {&UserCounter.Impl.put/3, [user_id, region]})
+  def drop(server, user_id), do: GenServer.call(server, {&UserCounter.Impl.drop/2, [user_id]})
 
-  def count(server), do: GenServer.call(server, {:apply, &UserCounter.Impl.count/1, []})
-  def count(server, region), do: GenServer.call(server, {:apply, &UserCounter.Impl.count/2, [region]})
+  def count(server), do: GenServer.call(server, {&UserCounter.Impl.count/1, []})
+  def count(server, region), do: GenServer.call(server, {&UserCounter.Impl.count/2, [region]})
 
-  def empty?(server), do: GenServer.call(server, {:apply, &UserCounter.Impl.empty?/1, []})
-  def empty?(server, region), do: GenServer.call(server, {:apply, &UserCounter.Impl.empty?/2, [region]})
+  def empty?(server), do: GenServer.call(server, {&UserCounter.Impl.empty?/1, []})
+  def empty?(server, region), do: GenServer.call(server, {&UserCounter.Impl.empty?/2, [region]})
 
   ############## GenServer Implementation ################
   @impl GenServer
@@ -29,6 +29,12 @@ defmodule UserCounter do
 
   @impl GenServer
   def handle_call({:apply, implementation_function, args}, _from, state) do
+    GenImpl.apply_call(implementation_function, state, args)
+  end
+
+  # Nobody ever said the first element of your tuple has to be an atom...
+  @impl GenServer
+  def handle_call({implementation_function, args}, _from, state) when is_function(implementation_function) do
     GenImpl.apply_call(implementation_function, state, args)
   end
 
