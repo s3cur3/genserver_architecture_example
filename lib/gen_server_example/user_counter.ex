@@ -27,11 +27,6 @@ defmodule UserCounter do
     {:ok, %UserCounter.Impl{}}
   end
 
-  @impl GenServer
-  def handle_call({:apply, implementation_function, args}, _from, state) do
-    GenImpl.apply_call(implementation_function, state, args)
-  end
-
   # Nobody ever said the first element of your tuple has to be an atom...
   @impl GenServer
   def handle_call({implementation_function, args}, _from, state) when is_function(implementation_function) do
